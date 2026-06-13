@@ -1,0 +1,13 @@
+name: ci-schedule
+
+on:
+    schedule:
+        - cron: '30 23 12 * *' 
+        # This cron expression means the workflow will run every day at midnight (UTC)
+
+jobs:
+    schedule:
+        runs-on: ubuntu-24.04
+        steps:
+            -   name: saludar
+                run: echo "Hello, this workflow runs on a schedule!"

@@ -1,0 +1,14 @@
+name: ci-manual
+
+on:
+    workflow_dispatch:
+
+jobs:
+    hello:
+        runs-on: ubuntu-24.04
+        steps:
+            -   name: Greet
+                run: echo "Hello, World!"
+                
+            -   name: list files
+                run: ls -la

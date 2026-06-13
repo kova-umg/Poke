@@ -2,13 +2,65 @@ name: ci-manual
 
 on:
     workflow_dispatch:
+        inputs:
+            log-level:
+                description: "Log level for the workflow"
+                required: true
+                default: "info" 
+                type: choice
+                options:
+                    - debug
+                    - info
+                    - warning
+                    - error
 
+            environment:
+                description: "The environment to run the workflow in"
+                required: true
+                default: "Development"
+                type: choice
+                options:
+                    - Development
+                    - Staging
+                    - Production
+                #also can be used the type 'environment' so we can select the environment from
+                # the list of environments defined in the repository settings
+
+            dry_run:
+                description: "Whether to perform a dry run (no actual changes will be made)"
+                required: false
+                default: false
+                type: boolean
+                #dry-run means that no actual changes will be made. This can be useful for 
+                #testing the workflow without affecting any resources or data.
+
+            version:
+                description: "Reason of the execution"
+                required: false
+                default: "Manueal execution"
+                type: string
 jobs:
-    hello:
+    manual:
         runs-on: ubuntu-24.04
         steps:
-            -   name: Greet
-                run: echo "Hello, World!"
-                
-            -   name: list files
-                run: ls -la
+            -   name: Show all inputs
+                env:
+                    LOG_LEVEL: ${{ inputs.log-level }}
+                    ENVIRONMENT: ${{ inputs.environment }}
+                    DRY_RUN: ${{ inputs.dry_run }}
+                    VERSION: ${{ inputs.version }}
+                run: |
+                    echo "Log Level: $LOG_LEVEL"
+                    echo "Environment: $ENVIRONMENT"
+                    echo "Dry Run: $DRY_RUN"
+                    echo "Version: $VERSION"
+
+            -   name: Deploy it it is not dry-run
+                if: ${{ inputs.dry_run == 'false' }}
+                env:
+                    ENVIRONMENT: ${{ inputs.environment }}  
+                run: echo "Deploying to $ENVIRONMENT"
+
+            -   name: Skip deployment if it is a dry-run
+                if: ${{ inputs.dry_run }}
+                run: echo "Dry run - no changes applied"

@@ -1,0 +1,26 @@
+name: ci-cd
+
+on:
+    push:
+        branches: [main]
+    pull_request:
+        branches: [main]
+
+jobs:
+    ci-cd:
+        runs-on: ubuntu-24.04
+        steps:
+            -   name: Checkout repository
+                uses: actions/checkout@v6
+
+            -   name: Setup pnpm and Nodejs
+                uses: ./.github/actions/setup-pnpm-ci-cd
+            
+            -   name: Use EsLint
+                run: pnpm run lint
+
+            -   name: Test
+                run: pnpm test
+
+            -   name: Build
+                run: pnpm build

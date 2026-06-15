@@ -26,3 +26,18 @@ jobs:
                     GITHUB_REPOSITORY: ${{ github.repository }}
                 run: 
                     gh issue comment "$ISSUE_NUMBER" --body "Thank you for opening this issue! We will look into it as soon as possible." --repo "$GITHUB_REPOSITORY"
+
+            -   name: respond as the author of the repository
+                if: github.event_name == 'issues' && github.event.action == 'opened'
+                env:
+                    AUTHOR_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+                    ISSUE_NUMBER: ${{ github.event.issue.number }}
+                run: |
+                    if [[ -z "$AUTHOR_TOKEN" ]]; then
+                        echo "::warning:: There is no PERSONAL_ACCESS_TOKEN set. Skipping comment as author."
+                        exit 0
+                    fi
+                    GH_TOKEN="$AUTHOR_TOKEN" gh issue comment "$ISSUE_NUMBER" \
+                        --repo "$GITHUB_REPOSITORY" \
+                        --body "Thank you for opening this issue! I will look into it as soon as possible."
+                    

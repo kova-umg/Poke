@@ -1,0 +1,35 @@
+name: ci-cd
+
+on:
+    workflow_dispatch:
+
+jobs:
+    ci:
+        runs-on: ubuntu-24.04
+#if we have to run the command in a specific directory we can use the following code and also can be used in a specific step before run        
+#        defaults:
+#            run:
+#                working-directory: ./poke
+        steps:
+            -   name: Download repository
+                uses: actions/checkout@v6
+
+            -   name: Prepare pnpm
+                uses: pnpm/action-setup@v6
+                with:
+                    version: 11
+                    run_install: false
+
+            -   name: Install dependencies
+                run: pnpm install --frozen-lockfile
+#By default, the action pnpm it will use "pnpm ci" and it will do also a clean install with frozen lockfile
+            -   name: Use EsLint
+                run: pnpm run lint
+
+            -   name: Test
+                run: pnpm test
+
+            -   name: Build
+                run: pnpm build
+
+            

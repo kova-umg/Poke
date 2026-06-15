@@ -19,17 +19,16 @@ outputs:
 runs:
   using: "composite"
   steps:
+    - name: setup node.js
+      uses: actions/setup-node@v6
+      with:
+        node-version: ${{ inputs.node-version }}
+        
     - name: setup pnpm
       uses: pnpm/action-setup@v6
       with:
         version: ${{ inputs.pnpm-version }}
         run_install: false
-
-    - name: setup node.js
-      uses: actions/setup-node@v6
-      with:
-        node-version: ${{ inputs.node-version }}
-        cache: 'pnpm'
 
     - name: Install dependencies
       shell: bash

@@ -33,5 +33,4 @@ runs:
     - name: Install dependencies
       shell: bash
       run: |
-        cd ${{ github.workspace }}
         pnpm install --frozen-lockfile

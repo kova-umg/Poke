@@ -6,12 +6,38 @@ __v0_jsx-dev-runtime.ts
 .v0-trash/
 .vercel/
 
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+dist-ssr/
+*.local
+
 # Environment variables
-.env*.local
+.env
+.env.*
+!.env.example
 
-# Common ignores
-node_modules
-.next/
+# Logs
+logs/
+*.log
+npm-debug.log*
+pnpm-debug.log*
+
+# Test coverage
+coverage/
+
+# Tooling caches
+.vite/
+.eslintcache
+*.tsbuildinfo
+
+# OS files
 .DS_Store
+Thumbs.db
 
-.yaml
+# Editor directories (optional local settings)
+.vscode/*
+!.vscode/extensions.json
+.idea/

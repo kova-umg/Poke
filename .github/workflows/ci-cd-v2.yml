@@ -15,12 +15,17 @@ jobs:
             -   name: Use EsLint
                 run: pnpm run lint
 
-        #    -   name: Test
-        #        run: pnpm test
+    project-tests:
+        runs-on: ubuntu-24.04
+        steps:
+            -   uses: actions/checkout@v6
+            -   uses: ./.github/actions/setup-pnpm-ci-cd
+            -   name: Test
+                run: pnpm run test:run
 
     build:
         runs-on: ubuntu-24.04
-        needs: [project-lint]
+        needs: [project-lint, project-tests]
         steps:
             -   uses: actions/checkout@v6
             -   uses: ./.github/actions/setup-pnpm-ci-cd
